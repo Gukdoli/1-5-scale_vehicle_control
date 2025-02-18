@@ -13,22 +13,17 @@ def generate_launch_description():
         name='scale_vehicle_node',
         output='screen',
         parameters=[{
-            'steering_offset': 518,     # 중립 위치
-            'steering_range': 380,      # 최대 조향 범위
-            'max_steering': 420,        # 조향 제한
-            'max_speed': 250,           # 최대 속도
-            'max_speed_step': 15        # 속도 스텝
-        }]
+            'steering_offset': 518,
+            'steering_range': 380,
+            'max_steering': 420,
+            'max_speed': 250,
+            'max_speed_step': 15
+        }],
+        remappings=[
+            ('/vehicle_control', '/scale_vehicle_topic'),
+        ]
     )
-
-    # LIDAR launch
-    sllidar_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory('sllidar_ros2'), 'launch'),
-            '/sllidar_s2_launch.py'
-        ])
-    )
-
+    
     # GPS launch
     gps_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -39,6 +34,5 @@ def generate_launch_description():
 
     return LaunchDescription([
         vehicle_node,
-        sllidar_launch,
         gps_launch
     ])
